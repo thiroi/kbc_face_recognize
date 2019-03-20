@@ -4,8 +4,13 @@ import sqlite3
 import face_recognition
 
 
-@route("/recognize")
+@route("/recognize", method='POST')
 def somethingjson():
+    upload = request.files.get('file', '')
+    if not upload.filename.lower().endswith(('.png', '.jpg', '.jpeg')):
+        return 'File extension not allowed!'
+    upload.save("face.png")
+
     result = face_recognition.doIt()
     print(result)
     body = json.dumps({'name': result})
